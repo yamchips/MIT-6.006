@@ -1,0 +1,20 @@
+def count_long_subarray(A):
+    '''
+    Input:  A     | Python Tuple of positive integers
+    Output: count | number of longest increasing subarrays of A
+    '''
+    count = 0
+    lengthList = []
+    temp = 1
+    for i in range(len(A)-1):
+        if A[i] < A[i+1]:
+            temp += 1
+            if i == len(A)-2:
+                lengthList.append(temp)
+        else:
+            lengthList.append(temp)
+            temp = 1
+    for item in lengthList:
+        if item == max(lengthList):
+            count += 1
+    return count
