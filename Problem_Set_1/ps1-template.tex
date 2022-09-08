@@ -1,0 +1,193 @@
+%
+% 6.006 problem set 1 solutions template
+%
+\documentclass[12pt,twoside]{article}
+
+\input{macros-sp20}
+\newcommand{\theproblemsetnum}{1}
+
+\title{6.006 Problem Set 1}
+\usepackage{listings}
+
+\begin{document}
+
+%\handout{Problem Set \theproblemsetnum}
+
+\setlength{\parindent}{0pt}
+\medskip\hrulefill\medskip
+
+{\bf Name:} Fan Wu
+
+\medskip
+
+{\bf Collaborators:} None
+
+\medskip\hrulefill
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% See below for common and useful latex constructs. %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Some useful commands:
+%$f(x) = \Theta(x)$
+%$T(x, y) \leq \log(x) + 2^y + \binom{2n}{n}$
+% {\tt code\_function}
+
+
+% You can create unnumbered lists as follows:
+%\begin{itemize}
+%    \item First item in a list
+%        \begin{itemize}
+%            \item First item in a list
+%                \begin{itemize}
+%                    \item First item in a list
+%                    \item Second item in a list
+%                \end{itemize}
+%            \item Second item in a list
+%        \end{itemize}
+%    \item Second item in a list
+%\end{itemize}
+
+% You can create numbered lists as follows:
+%\begin{enumerate}
+%    \item First item in a list
+%    \item Second item in a list
+%    \item Third item in a list
+%\end{enumerate}
+
+% You can write aligned equations as follows:
+%\begin{align}
+%    \begin{split}
+%        (x+y)^3 &= (x+y)^2(x+y) \\
+%                &= (x^2+2xy+y^2)(x+y) \\
+%                &= (x^3+2x^2y+xy^2) + (x^2y+2xy^2+y^3) \\
+%                &= x^3+3x^2y+3xy^2+y^3
+%    \end{split}
+%\end{align}
+
+% You can create grids/matrices as follows:
+%\begin{align}
+%    A =
+%    \begin{bmatrix}
+%        A_{11} & A_{21} \\
+%        A_{21} & A_{22}
+%    \end{bmatrix}
+%\end{align}
+
+% You can include images and PDFs as follows:
+% \includegraphics[width=0.5\textwidth]{img.jpg}
+
+\begin{problems}
+
+\problem  % Problem 1
+
+\begin{problemparts}
+\problempart % Problem 1a
+Simplify these functions using exponentiation and logarithm rules, we have:
+
+$\Theta(f_1) = \Theta(nlogn)$, $\Theta(f_2) = \Theta((logn)^n)$, $\Theta(f_3) = \Theta(logn)$, $\Theta(f_4) = \Theta((logn)^{6006})$, $\Theta(f_5) = \Theta((log(log6006n)))$. 
+
+It is easy to conclude that the result is $\{f_5,f_3,f_4,f_1,f_2\}$
+\problempart % Problem 1b
+Convert all the exponent bases to 2, we have:
+
+$f_1 = 2^n, f_2 = 2^{nlog6006}, f_3 = 2^{6006^n}, f_4 = 2^{2^nlog6006}, f_5 = 2^{n^2log6006}$
+
+It is obvious to conclude that the result is $\{f_1, f_2, f_5, f_4, f_3\}$
+
+\problempart % Problem 1c
+$\Theta(f_1) = \Theta(n^n), \Theta(f_2) = \Theta(n^6) = \Theta(n^c), \Theta(f_5) = \Theta(n^c)$
+
+Using Sterling's approximation, we can simplify $f_3$ and $f_4$ to:
+
+$\Theta(f_3) = \Theta(\sqrt{2\pi(6n)}(\displaystyle\frac{6n}{e})^{6n}), \Theta(f_4) = \Theta(\frac{1}{\displaystyle\sqrt{n}}(\displaystyle\frac{6}{5^{5/6}})^n) \approx \Theta(\frac{1}{\displaystyle\sqrt{n}}(1.57)^n)$ 
+
+So, $f_3$ is the largest, and $f_1$ is larger than $f_4$, while $f_2$ and $f_5$ are equal. The result is $\{\{f_2,f_5\}, f_4, f_1,f_3\}$
+
+\problempart % Problem 1d
+Take the logarithms of these functions, we have:
+
+$\Theta(logf_1) = \Theta((n+4)logn)=\Theta(nlogn),\Theta(logf_2)=\Theta(\sqrt{n}logn),\Theta(logf_3)=\Theta(nlogn), \Theta(logf_4)=\Theta(n^2), \Theta(logf_5)=\Theta(logn)$
+
+It seems that $f_1$ and $f_3$ are asymptotically equal. Transform $f_3$ into:
+
+$f_3 = (4^{logn})^{3n}= (n^{log4})^{3n}=n^{6n}$
+
+So $f_3$ is asymptotically larger than $f_1$ (by about a factor of $n^{5n}$), the result is $\{f_5,f_2,f_1,f_3,f_4\}$
+
+\end{problemparts}
+
+\newpage
+\problem  % Problem 2
+
+\begin{problemparts}
+\problempart % Problem 2a
+Method 1: Use a for loop\\
+Use variants x1 and x2 to record the first and last item which are about to be swapped in this loop. We use D.delete\_at function to get the item deleted, then use the D.insert\_at function to swap the position of x1 and x2. After swapping, make the index of x1 move forward 1 step and x2 backward 1 step. The loop ends after k//2 times.This procudure would bu correct by induction.\\
+D.delete\_at and D.insert\_at function cost $O(logn)$ time, so swapping two items needs $O(logn)$ time, the loop takes k//2 steps, so overall the algorithm takes $O(klogn)$ time.\\
+\begin{lstlisting}
+for j in range(k//2):
+    x1 = D.delete_at(i+j)
+    x2 = D.delete_at(i+k-1-j)
+    D.insert_at(i+j,x2)
+    D.insert_at(i+k-1-j,x1)
+\end{lstlisting}
+Method 2: Recursion\\
+In order to reverse all the k items in the sequence, we can swap the item at index $i$ and $i+k-1$, and then recursively reverse the rest of the items. As a base case, no work needs to be done to reverse a subsequence containing less than 2 items. The procudure would be correct by induction.\\
+The swapping process is the same as Method 1. The swapping process takes $O(logn)$ time, the recursive procedure takes k//2 recursive calls , so the algorithm takes in $O(klogn)$ time.\\
+\begin{lstlisting}
+def reverse(D,i,k):
+    if k<2:
+        return
+    x2 = D.delete_at(i+k-1)
+    x1 = D.delete_at(i)
+    D.insert_at(i+k-1,x1)
+    D.insert_at(i, x2)
+    reverse(D, i+1, k-2)
+\end{lstlisting}
+\problempart % Problem 2b
+Use recursion to solve this problem. To move the k-item subsequence starting at $i$ in front of the item at index $j$, it suffices to move the item A at index $i$ in front of the item B at index $j$, and recursively move the remainder infront of the item A. As a base case, no work needs to be done if $k = 0$.\\
+If $j<i$, use a variant $x$ to contain the deleted item A at index $i$, then use insert function to put $x$ in front of index $j$, then we recursively call the function move(). Because we have moved A in front of index j, and the number of items does not change before index $i+1$, so we need to move the next item at index $i+1$, and the total number of items we want to move become $k-1$, the next move requires us to move the item in front of the item A, whose index have become $j+1$, so the move() function goes like this: $move(D,i+1,k-1,j+1)$.\\
+If $j>i$, use a variant $x$ to contain the deleted item A at index $i$, then use insert function to put $x$ in front of index $j$, then we recursively call the function move(). Because we have moved A in front of index j, there is one less item before original index j, so before the insert function, change $j$ into $j-1$. When we use the move() function, we do not need to change index $i$. But we need to change $j$ into $j+1$ because we minus 1 before, and the total number of items we want to move becomes $k-1$. So the move function goes like this: $move(D,i,k-1,j+1)$.\\
+The problem has assumed that the expression $i\leq j<i+k$ is false, so we have discussed all the possible situations, that makes the algorithm correct.\\
+As for the running time, the delete and insert steps only cost $O(logn)$ time, and the recursive call takes no more than $k$ steps, so the total running time is $O(klogn)$.\\
+\begin{lstlisting}
+def move(D,i,k,j):
+    if k<1:
+        return
+    if i>j:
+        x = D.delete_at(i)
+        D.insert_at(j,x)
+        move(D,i+1,k-1,j+1)
+    if i<j:
+        x = D.delete_at(i)
+        j = j-1
+        D.insert_at(j,x)
+        move(D,i,k-1,j+1)
+\end{lstlisting}
+\end{problemparts}
+
+\newpage
+\problem  % Problem 3
+Use a dynamic array of size $3n$ to store the pages. To build the array:\\
+1. Place items before bookmark A in the first n places, leaving some empty places,we name these n items $P_1$\\
+2. Place items between bookmark A and bookmark B starting from index n, we name these n items $P_2$\\
+3. Place items after bookmark B starting from index 2n, we name these items $P_3$\\
+Build a dynamic array of $n$ items costs $O(n)$ time, so build a dynamic array of $3n$ items costs $O(n)$ time too.\\
+If we want to place a bookmark between index $i$ and $i+1$ and these indices are in $P_1$, we need to move items from index $i+1$ to the last non-empty item in $P_1$ to the head of $P_2$, we use $delete\_last$ and $insert\_last$ function cost $O(n)$ time.
+
+\newpage
+\problem  % Problem 4
+
+\begin{problemparts}
+\problempart % Problem 4a
+\problempart % Problem 4b
+\problempart % Problem 4c
+\problempart Submit your implementation to {\small\url{alg.mit.edu}}.
+\end{problemparts}
+
+\end{problems}
+
+\end{document}
