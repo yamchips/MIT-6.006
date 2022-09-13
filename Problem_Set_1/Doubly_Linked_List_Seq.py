@@ -90,7 +90,7 @@ class Doubly_Linked_List_Seq:
         if self.tail == x2:
             self.tail = x1.prev
         else:
-            x2.next = x1.prev
+            x2.next.prev = x1.prev
         x1.prev = None
         x2.next = None
         return L2
